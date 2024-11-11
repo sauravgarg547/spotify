@@ -1,35 +1,33 @@
-# Stage 1: Build the application
-FROM node:20 AS build
+# Stage 1: Frontend Build Stage using Node.js 20
+FROM node:20 AS frontend
 
-# Set the working directory
+# Set working directory for the frontend application
 WORKDIR /app
 
-# Copy package.json and package-lock.json to the working directory
-COPY package*.json ./
+# Copy package.json and package-lock.json to install dependencies
+COPY package.json package-lock.json ./
 
-# Install dependencies
+# Install frontend dependencies
 RUN npm install
 
-# Copy the rest of the application source code
+# Copy all the application files to the container
 COPY . .
 
 # Build the Vite app for production
 RUN npm run build
 
-# Stage 2: Serve the application with a lightweight image
-FROM node:18-alpine AS production
+# Stage 2: Production Stage using Nginx and Node.js 20-slim for reverse proxy
+FROM nginx:alpine AS production
 
-# Install a lightweight HTTP server
-RUN npm install -g serve
+# Copy the built Vite app from the frontend build stage
+COPY --from=frontend /app/dist /usr/share/nginx/html
 
-# Set the working directory
-WORKDIR /app
+# Copy custom Nginx configuration for reverse proxy setup
+COPY nginx.conf .
 
-# Copy the built files from the previous stage
-COPY --from=build /app/dist /app/dist
-
-# Expose the production port
+# Expose port 80 (for Nginx) and 3000 (for Node.js app)
+EXPOSE 80
 EXPOSE 3000
 
-# Serve the app
-CMD ["serve", "-s", "dist"]
+# Start Nginx with reverse proxy setup for the Vite frontend
+CMD ["nginx", "-g", "daemon off;"]
