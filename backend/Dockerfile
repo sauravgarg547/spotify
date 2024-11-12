@@ -1,34 +1,21 @@
-# Stage 1: Install dependencies and build the application
-FROM node:20 AS build
+# Use official Node.js image
+FROM node:18
 
-# Set the working directory
+# Set working directory
 WORKDIR /app
 
-# Copy package.json and package-lock.json to install dependencies first
+# Copy package.json and package-lock.json
 COPY package*.json ./
 
 # Install dependencies
 RUN npm install
 
-# Copy the entire source code to the container
+# Copy all files from the current directory
 COPY . .
 
-# Build the application (optional, for TypeScript or other build steps)
-# Uncomment the line below if you need to compile (e.g., TypeScript to JavaScript)
-# RUN npm run build
-
-# Stage 2: Run the application in a lightweight environment
-FROM node:18-alpine AS production
-
-# Set the working directory
-WORKDIR /app
-
-# Copy only the node_modules and build files from the build stage
-COPY --from=build /app/node_modules /app/node_modules
-COPY --from=build /app .
-
-# Expose the backend port (change if your app runs on a different port)
+# Expose the port the app will run on
 EXPOSE 5000
 
-# Command to start the application
-CMD ["npm", "start"]
+# Run the backend server
+CMD ["npm", "run", "dev"]
+
