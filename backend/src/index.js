@@ -29,7 +29,7 @@ initializeSocket(httpServer);
 
 app.use(
 	cors({
-		origin: "http://13.203.63.158:3000",
+		origin: "http://43.204.126.146:3000",
 		credentials: true,
 	})
 );
