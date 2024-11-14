@@ -29,11 +29,5 @@ pipeline {
                 pushDockerImage('spotify-web-app-cicd_frontend:latest', 'spotify-frontend:latest')
             }
         }
-
-        stage('Push MongoDB Image') {
-            steps {
-                pushDockerImage('mongo:latest', 'spotify-mongo:latest')
-            }
-        }
     }
 }
