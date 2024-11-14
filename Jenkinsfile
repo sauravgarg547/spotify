@@ -1,4 +1,4 @@
-@Library('devops-library') _
+@Library('devops-library') __
 
 pipeline {
     agent { label 'dev-server' }
@@ -12,9 +12,7 @@ pipeline {
 
         stage('Build Docker Images') {
             steps {
-                sh 'docker-compose down'
                 sh 'docker-compose build'
-                sh 'docker-compose up -d'
             }
         }
 
@@ -31,3 +29,4 @@ pipeline {
         }
     }
 }
+
