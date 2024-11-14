@@ -14,7 +14,7 @@ pipeline {
         stage("Build and Run Containers") {
             steps {
                 script {
-                    // Build and run the backend and frontend containers using Docker Compose
+                    // Build and run the backend, frontend, and mongo containers using Docker Compose
                     sh 'docker-compose build'
                     sh 'docker-compose up -d'
                 }
@@ -25,7 +25,7 @@ pipeline {
             steps {
                 script {
                     def backendContainerRunning = sh(
-                        script: 'docker ps -q -f name=backend-container', // Replace with your actual backend container name
+                        script: 'docker ps -q -f name=Spotify-backend', // Replace with your actual backend container name
                         returnStatus: true
                     )
                     if (backendContainerRunning == 0) {
@@ -47,7 +47,7 @@ pipeline {
             steps {
                 script {
                     def frontendContainerRunning = sh(
-                        script: 'docker ps -q -f name=frontend-container', // Replace with your actual frontend container name
+                        script: 'docker ps -q -f name=Spotify-frontend', // Replace with your actual frontend container name
                         returnStatus: true
                     )
                     if (frontendContainerRunning == 0) {
@@ -60,6 +60,28 @@ pipeline {
                         }
                     } else {
                         error("Frontend container is not running, skipping DockerHub push for frontend.")
+                    }
+                }
+            }
+        }
+
+        stage("Push MongoDB to DockerHub") {
+            steps {
+                script {
+                    def mongoContainerRunning = sh(
+                        script: 'docker ps -q -f name=SpotifymongoDBr', // Replace with your actual mongo container name
+                        returnStatus: true
+                    )
+                    if (mongoContainerRunning == 0) {
+                        withCredentials([usernamePassword(credentialsId: DOCKERHUB_CREDS, usernameVariable: "dockerHubUser", passwordVariable: "dockerHubPass")]) {
+                            sh '''
+                                docker login -u ${dockerHubUser} -p ${dockerHubPass}
+                                docker image tag mongo:latest ${dockerHubUser}/spotify-mongo:latest
+                                docker push ${dockerHubUser}/spotify-mongo:latest
+                            '''
+                        }
+                    } else {
+                        error("MongoDB container is not running, skipping DockerHub push for MongoDB.")
                     }
                 }
             }
