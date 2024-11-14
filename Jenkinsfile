@@ -12,10 +12,9 @@ pipeline {
 
         stage('Build Docker Images') {
             steps {
-                sh 'docker-compose down'
-                sh 'docker-compose build'
-                sh 'docker-compose up -d'   
-             }
+                // Use shared library to handle docker-compose commands
+                dockerCompose()
+            }
         }
 
         stage('Push Backend Image') {
@@ -31,4 +30,3 @@ pipeline {
         }
     }
 }
-
