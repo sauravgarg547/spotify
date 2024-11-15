@@ -31,6 +31,36 @@ About This Course:
 - **CI/CD**: Jenkins
 - **Monitoring**: Prometheus, Grafana
 
+
+
+##  Jenkins CI/CD Pipeline
+    The project integrates a robust Jenkins CI/CD pipeline for streamlined deployment.
+
+# Pipeline Overview
+
+- **Code Clone**: Jenkins clones the GitHub repository from the main branch.
+
+- **Build Docker Images**: Jenkins builds the Docker images for both frontend and backend applications.
+
+- **Run Unit Tests**: Jenkins runs the unit tests for both frontend and backend applications.
+
+- **Push Docker Images**: The images are tagged and pushed to the Docker registry for deployment.
+
+- **Deploy to AWS**: Jenkins deploys the Docker containers to the AWS environment.
+
+- **Deployment**: The Docker images are deployed and managed using docker-compose.
+
+# Shared Library for Jenkins
+    A shared library has been created to simplify and standardize the Jenkins pipeline. This library contains custom functions to handle repetitive tasks such as cloning the repository, building Docker images, and pushing them to the registry.
+
+## Shared Library Functions
+## git Clone: https://github.com/sauravgarg547/devops-library.git.
+
+- **gitClone**: Clones the GitHub repository using the provided URL and branch name.
+
+
+- **pushDockerImage**: Tags and pushes Docker images to the container registry.
+
 ## 🚀 Getting Started
 # 🛠 Installation
 
@@ -52,7 +82,7 @@ cd spotify
 # Install server dependencies
 cd backend
 npm install
-npm run dev
+npm run
 
 # Install client dependencies
 cd frontend
