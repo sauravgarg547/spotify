@@ -3,7 +3,7 @@
 ![Demo App](/frontend/public/screenshot-for-readme.png)
 
 
-About This Course:
+About This Application:
 
 -   🎸 Listen to music, play next and previous songs
 -   🔈 Update the volume with a slider
