@@ -84,7 +84,7 @@ cd spotify
 # Install server dependencies
 cd backend
 npm install
-npm run
+npm run dev
 
 # Install client dependencies
 cd frontend
