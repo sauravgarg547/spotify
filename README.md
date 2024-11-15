@@ -3,7 +3,7 @@
 ![Demo App](/frontend/public/screenshot-for-readme.png)
 
 
-About This Application:
+About This Course:
 
 -   🎸 Listen to music, play next and previous songs
 -   🔈 Update the volume with a slider
@@ -34,7 +34,7 @@ About This Application:
 
 
 ##  Jenkins CI/CD Pipeline
-    The project integrates a robust Jenkins CI/CD pipeline for streamlined deployment.
+The project integrates a robust Jenkins CI/CD pipeline for streamlined deployment.
 
 # Pipeline Overview
 
@@ -51,10 +51,12 @@ About This Application:
 - **Deployment**: The Docker images are deployed and managed using docker-compose.
 
 # Shared Library for Jenkins
-    A shared library has been created to simplify and standardize the Jenkins pipeline. This library contains custom functions to handle repetitive tasks such as cloning the repository, building Docker images, and pushing them to the registry.
+ A shared library has been created to simplify and standardize the Jenkins pipeline. This library contains custom functions to handle repetitive tasks such as cloning the repository, building Docker images, and pushing them to the registry.
 
 ## Shared Library Functions
-## git Clone: https://github.com/sauravgarg547/devops-library.git.
+### git Clone : Clones the GitHub repository from the main branch.
+
+      https://github.com/sauravgarg547/devops-library.git
 
 - **gitClone**: Clones the GitHub repository using the provided URL and branch name.
 
