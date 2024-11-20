@@ -33,7 +33,7 @@ pipeline {
                 script {
                     echo "Pushing backend image..."
                 }
-                pushDockerImage('spotifyci-cd_backend:latest', 'spotify-backend:latest')
+                pushDockerImage('saurav547/spotify-backend:latest', 'spotify-backend:latest')
             }
         }
 
@@ -42,7 +42,7 @@ pipeline {
                 script {
                     echo "Pushing frontend image..."
                 }
-                pushDockerImage('spotifyci-cd_frontend:latest', 'spotify-frontend:latest')
+                pushDockerImage('saurav547/spotify-frontend:latest', 'spotify-frontend:latest')
             }
         }
     }
