@@ -29,16 +29,6 @@ services:
     networks:
       - spotify-music
 
-  Nginx:
-    build:
-      context: ./Nginx
-    container_name: Nginx
-    ports:
-      - "80:80"
-    restart: always
-    networks:
-      - spotify-music
-
   db:
     image: mongo:latest  # Use MongoDB image
     container_name: mongo-container
