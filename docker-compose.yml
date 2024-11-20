@@ -13,19 +13,6 @@ services:
       - db
     networks:
       - spotify-music
-nginx:
-    image: nginx:latest
-    container_name: nginx-container
-    ports:
-      - "80:80"
-      - "443:443"
-    volumes:
-      - ./nginx.conf:/etc/nginx/conf.d/default.conf
-      - ./certs:/etc/nginx/ssl  # Mount your SSL certificate and key
-    depends_on:
-      - frontend
-    networks:
-      - spotify-music
 
   frontend:
     build:
