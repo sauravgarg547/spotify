@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend-service
+  namespace: spotify
+spec:
+  selector:
+    app: backend
+  ports:
+  - protocol: TCP
+    port: 5000        # Service port inside the cluster
+    targetPort: 5000   # Port on the nginx container
+    nodePort: 30001  # Port accessible outside the cluster (must be in range 30000-32767)
+  type: NodePort
