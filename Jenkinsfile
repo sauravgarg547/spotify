@@ -1,7 +1,7 @@
 @Library('devops-library') _
 
 pipeline {
-    agent { label 'dev-server' }
+    agent { label 'prod' }
 
     environment {
         DOCKERHUB_CREDENTIALS = credentials('dockerHubCreds')
