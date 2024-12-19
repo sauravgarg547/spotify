@@ -6,7 +6,7 @@ set -e
 echo "Applying namespace configuration..."
 kubectl apply -f namespace.yml
 
-#echo "Deploying persistent volume for Spotify app..."
+echo "Deploying persistent volume for Spotify app..."
 #kubectl apply -f spotifyapp-pv.yml
 
 #echo "Setting up MongoDB resources..."
