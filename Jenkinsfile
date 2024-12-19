@@ -1,5 +1,5 @@
 pipeline {
-    agent { label "dev-server" }
+    agent { label "prod" }
     environment {
         // DockerHub credentials
         DOCKERHUB_CREDS = "dockerHubCreds" // Replace with your Jenkins credentials ID
