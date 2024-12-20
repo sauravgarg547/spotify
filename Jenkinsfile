@@ -1,54 +1,41 @@
-pipeline{
+pipeline {
     agent { label "prod" }
 
     stages {
-        stage("code clone"){
-            step {
+        stage("Code Clone") {
+            steps {
                 echo "Git clone"
                 git url: "https://github.com/sauravgarg547/spotify.git", branch: "main"
-
-                
             }
         }
-    }
-    
-    stages {
-        stage("Port kill"){
-            step {
+
+        stage("Port Kill") {
+            steps {
                 script {
-                echo "Port kill"
-                sh 'sudo kill -9 $(sudo lsof -t -i:3000)'
-                sh 'sudo kill -9 $(sudo lsof -t -i:5000)'
+                    echo "Killing processes on ports 3000 and 5000"
+                    sh 'sudo kill -9 $(sudo lsof -t -i:3000 || true)'
+                    sh 'sudo kill -9 $(sudo lsof -t -i:5000 || true)'
                 }
-                
-
-                
             }
         }
-    }
 
-    stages {
-        stage("build"){
-            step {
+        stage("Build") {
+            steps {
                 script {
-                echo "code build"
-                dir('k8s') {
-                sh 'chmod +x ./deploy.sh'
-                sh './deploy.sh'
+                    echo "Code build"
+                    dir('k8s') {
+                        sh 'chmod +x ./deploy.sh'
+                        sh './deploy.sh'
+                    }
                 }
-                
-
-                
             }
         }
     }
 
-    stages {
-        stage (finally){
-            steps{
-                script{
-                    echo "Deployment completed"
-                }
+    post {
+        always {
+            script {
+                echo "Deployment completed"
             }
         }
     }
