@@ -14,6 +14,8 @@ pipeline {
                     dir('k8s') {
                         sh 'chmod +x ./deploy.sh'
                         sh './deploy.sh'
+                        sh 'kubectl port-forward service/frontend-service -n spotify 3000:3000 --address=0.0.0.0  &'
+                        sh 'kubectl port-forward service/backend-service -n spotify 5000:5000 --address=0.0.0.0 &'
                     }
                 }
             }
@@ -27,8 +29,7 @@ pipeline {
 
         stage("Port fuser") {
             steps {
-                sh 'fuser -k 3000/tcp || true'
-                sh 'fuser -k 5000/tcp || true'                
+                              
             }
         }
 
@@ -42,8 +43,7 @@ pipeline {
                     '''
                     // Forward ports with timeout
                     
-                    sh    'kubectl port-forward service/frontend-service -n spotify 3000:3000 --address=0.0.0.0  &'
-                    sh   'kubectl port-forward service/backend-service -n spotify 5000:5000 --address=0.0.0.0 &'
+                    
                     
                 }
             }
