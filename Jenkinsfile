@@ -11,20 +11,8 @@ pipeline {
         stage("Build and Run Containers") {
             steps {
                 script {
-                    // Ensure the k8s directory exists before proceeding
-                    sh '''
-                        if [ ! -d "k8s" ]; then
-                            echo "Directory 'k8s' not found!"
-                            exit 1
-                        fi
-                    '''
-                    
-                    // Navigate to the k8s directory
                     dir('k8s') {
-                        // Make deploy.sh executable
                         sh 'chmod +x ./deploy.sh'
-                        
-                        // Run the deploy script
                         sh './deploy.sh'
                     }
                 }
@@ -33,23 +21,18 @@ pipeline {
 
         stage("Docker Deploy") {
             steps {
-                script {
-                    // Check Kubernetes resources in the specified namespace
-                    sh '''
-                        kubectl get all -n spotify || {
-                            echo "Error: Could not retrieve Kubernetes resources."
-                            exit 1
-                        }
-                    '''
-                }
+                sh 'kubectl get all -n spotify'
             }
         }
 
         stage("Port Forwarding") {
             steps {
                 script {
-                    // Forward frontend and backend service ports
+                    // Free up ports 3000 and 5000 if they are in use
                     sh '''
+                        fuser -k 3000/tcp || true
+                        fuser -k 5000/tcp || true
+                        
                         kubectl port-forward service/frontend-service -n spotify 3000:3000 --address=0.0.0.0 &
                         kubectl port-forward service/backend-service -n spotify 5000:5000 --address=0.0.0.0 &
                     '''
