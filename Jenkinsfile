@@ -37,16 +37,16 @@ pipeline {
         stage("Port Forwarding") {
             steps {
                 script {
-                    // Ensure services are running
+                    // Validate services
                     sh '''
                         kubectl get svc frontend-service -n spotify || exit 1
                         kubectl get svc backend-service -n spotify || exit 1
                     '''
                     
-                    // Forward ports with timeout
+                    // Port forward services
                     sh '''
-                        timeout 60s kubectl port-forward service/frontend-service -n spotify 3000:3000 --address=0.0.0.0 &
-                        timeout 60s kubectl port-forward service/backend-service -n spotify 5000:5000 --address=0.0.0.0 &
+                        nohup kubectl port-forward service/frontend-service -n spotify 3000:3000 --address=0.0.0.0 > frontend.log 2>&1 &
+                        nohup kubectl port-forward service/backend-service -n spotify 5000:5000 --address=0.0.0.0 > backend.log 2>&1 &
                     '''
                 }
             }
