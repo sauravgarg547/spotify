@@ -41,10 +41,10 @@ pipeline {
                         kubectl get svc backend-service -n spotify || exit 1
                     '''
                     // Forward ports with timeout
-                    sh '''
-                        timeout 600 kubectl port-forward service/frontend-service -n spotify 3000:3000 --address=0.0.0.0 > frontend.log 2>&1 &
-                        timeout 600 kubectl port-forward service/backend-service -n spotify 5000:5000 --address=0.0.0.0 > backend.log 2>&1 &
-                    '''
+                    
+                    sh    'kubectl port-forward service/frontend-service -n spotify 3000:3000 --address=0.0.0.0  &'
+                    sh   'kubectl port-forward service/backend-service -n spotify 5000:5000 --address=0.0.0.0 &'
+                    
                 }
             }
         }
