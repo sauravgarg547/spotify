@@ -12,6 +12,7 @@ pipeline {
             steps {
                 script {
                     // Build and run the backend and frontend containers using Docker Compose
+                    sh 'cd k8s'
                     sh 'chmod +x ./deploy.sh'
                     sh './deploy.sh'
                 }
