@@ -18,15 +18,6 @@ pipeline {
                 }
             }
         }
-
-        stage("Port fuser") {
-            steps {
-                script {
-                    
-                }
-            }
-        }
-
         stage("Docker Deploy") {
             steps {
                 sh 'kubectl get all -n spotify'
