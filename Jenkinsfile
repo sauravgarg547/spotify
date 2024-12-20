@@ -30,8 +30,7 @@ pipeline {
                 script {
                     // Free up ports 3000 and 5000 if they are in use
                     sh '''
-                        fuser -k 3000/tcp || true
-                        fuser -k 5000/tcp || true
+                        pkill -f "kubectl port-forward"
                     '''
                 }
             }
