@@ -14,9 +14,16 @@ pipeline {
                     dir('k8s') {
                         sh 'chmod +x ./deploy.sh'
                         sh './deploy.sh'
-                        sh 'kubectl port-forward service/frontend-service -n spotify 3000:3000 --address=0.0.0.0  &'
-                        sh 'kubectl port-forward service/backend-service -n spotify 5000:5000 --address=0.0.0.0 &'
                     }
+                }
+            }
+        }
+
+        stage("Port fuser") {
+            steps {
+                script {
+                    sh 'fuser -k 3000/tcp || true'
+                    sh 'fuser -k 5000/tcp || true'
                 }
             }
         }
@@ -24,12 +31,6 @@ pipeline {
         stage("Docker Deploy") {
             steps {
                 sh 'kubectl get all -n spotify'
-            }
-        }
-
-        stage("Port fuser") {
-            steps {
-                              
             }
         }
 
@@ -41,10 +42,12 @@ pipeline {
                         kubectl get svc frontend-service -n spotify || exit 1
                         kubectl get svc backend-service -n spotify || exit 1
                     '''
+                    
                     // Forward ports with timeout
-                    
-                    
-                    
+                    sh '''
+                        timeout 60s kubectl port-forward service/frontend-service -n spotify 3000:3000 --address=0.0.0.0 &
+                        timeout 60s kubectl port-forward service/backend-service -n spotify 5000:5000 --address=0.0.0.0 &
+                    '''
                 }
             }
         }
