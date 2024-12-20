@@ -11,16 +11,37 @@ pipeline {
         stage("Build and Run Containers") {
             steps {
                 script {
-                    // Build and run the backend and frontend containers using Docker Compose
-                    sh 'cd k8s'
-                    sh 'chmod +x ./deploy.sh'
-                    sh './deploy.sh'
+                    // Ensure the k8s directory exists before proceeding
+                    sh '''
+                        if [ ! -d "k8s" ]; then
+                            echo "Directory 'k8s' not found!"
+                            exit 1
+                        fi
+                    '''
+                    
+                    // Navigate to the k8s directory
+                    dir('k8s') {
+                        // Make deploy.sh executable
+                        sh 'chmod +x ./deploy.sh'
+                        
+                        // Run the deploy script
+                        sh './deploy.sh'
+                    }
                 }
             }
         }
+
         stage("Docker Deploy") {
             steps {
-                sh 'kubectl get all -n spotify ' // Display all running containers
+                script {
+                    // Check Kubernetes resources in the specified namespace
+                    sh '''
+                        kubectl get all -n spotify || {
+                            echo "Error: Could not retrieve Kubernetes resources."
+                            exit 1
+                        }
+                    '''
+                }
             }
         }
     }
