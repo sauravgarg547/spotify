@@ -22,8 +22,7 @@ pipeline {
         stage("Port fuser") {
             steps {
                 script {
-                    sh 'fuser -k 3000/tcp || true'
-                    sh 'fuser -k 5000/tcp || true'
+                    
                 }
             }
         }
