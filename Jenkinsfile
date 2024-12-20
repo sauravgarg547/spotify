@@ -44,5 +44,17 @@ pipeline {
                 }
             }
         }
+
+        stage("Port Forwarding") {
+            steps {
+                script {
+                    // Forward frontend and backend service ports
+                    sh '''
+                        kubectl port-forward service/frontend-service -n spotify 3000:3000 --address=0.0.0.0 &
+                        kubectl port-forward service/backend-service -n spotify 5000:5000 --address=0.0.0.0 &
+                    '''
+                }
+            }
+        }
     }
 }
